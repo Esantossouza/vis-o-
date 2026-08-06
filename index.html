@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Visual e Audiovisual - Acessibilidade & Simulação</title>
+    <style>
+        /* --- ESTILOS BASE --- */
+        :root {
+            --bg-color: #121214;
+            --card-bg: #1e1e22;
+            --text-color: #e1e1e6;
+            --accent-color: #8257e5;
+            --brightness: 100%;
+            --blur-val: 0px;
+            --double-vision: none;
+            --hue-rotate: 0deg;
+            --opacity-val: 1;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Camada de Simulação Aplicada ao Conteúdo */
+        #simulation-container {
+            filter: 
+                brightness(var(--brightness)) 
+                blur(var(--blur-val)) 
+                hue-rotate(var(--hue-rotate))
+                drop-shadow(var(--double-vision));
+            opacity: var(--opacity-val);
+            transition: filter 0.3s ease;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Painel de Acessibilidade Fixo */
+        .accessibility-panel {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #202024;
+            border-bottom: 2px solid var(--accent-color);
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 6px;
+            background: #121214;
+            color: #fff;
+            border: 1px solid #323238;
+        }
+
+        /* Conteúdo Principal */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 { color: var(--accent-color); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        /* Estilo para simular Miopia/Presbiopia focando no texto */
+        .myopia-test {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="accessibility-panel">
+        <div class="controls-group">
+            <label for="brightness">💡 Brilho:</label>
+            <button onclick="adjustBrightness(-10)">-</button>
+            <span id="bright-val">100%</span>
+            <button onclick="adjustBrightness(10)">+</button>
+        </div>
+
+        <div class="controls-group">
+            <label for="vision-filter">👁️ Simular Visão:</label>
+            <select id="vision-filter" onchange="applyVisionFilter(this.value)">
+                <option value="normal">Visão Normal</option>
+                <option value="catarata">Catarata</option>
+                <option value="astigmatismo">Astigmatismo</option>
+                <option value="miopia">Miopia</option>
+                <option value="hipermetropia">Hipermetropia</option>
+                <option value="presbiopia">Presbiopia (Vista Cansada)</option>
+                <option value="conjuntivite">Conjuntivite</option>
+            </select>
+        </div>
+
+        <div class="controls-group">
+            <button onclick="speakText()">🔊 Ouvir Página</button>
+            <button onclick="stopSpeech()">⏹️ Parar Voz</button>
+        </div>
+    </div>
+
+    <div id="simulation-container">
+        <header>
+            <h1>Universo Visual & Audiovisual</h1>
+            <p>Explore a importância da comunicação visual e experimente como diferentes condições oculares alteram a percepção do mundo ao nosso redor.</p>
+        </header>
+
+        <main class="grid">
+            <article class="card">
+                <h3>Visão Normal</h3>
+                <p>A luz entra nos olhos e é focada perfeitamente na retina, gerando imagens nítidas tanto de perto quanto de longe, com cores e contraste adequados.</p>
+            </article>
+
+            <article class="card">
+                <h3>Catarata</h3>
+                <p>É a opacificação do cristalino (a lente natural do olho). Faz com que a visão fique embaçada, opaca ou "nevoenta", como se olhasse através de um vidro embaçado.</p>
+            </article>
+
+            <article class="card">
+                <h3>Astigmatismo</h3>
+                <p>Causado por uma curvatura irregular da córnea ou do cristalino. Isso faz com que os raios de luz se foquem em múltiplos pontos, gerando visão desfocada ou com "sombras/fantasmas".</p>
+            </article>
+
+            <article class="card">
+                <h3>Miopia</h3>
+                <p>Ocorre quando o olho é ligeiramente mais longo do que o normal. Objetos próximos são vistos com clareza, mas objetos distantes ficam desfocados e difíceis de identificar.</p>
+            </article>
+
+            <article class="card">
+                <h3>Hipermetropia</h3>
+                <p>Ocorre quando o olho é mais "curto" do que o normal. A imagem se forma atrás da retina, dificultando o foco de objetos próximos, causando cansaço visual e dores de cabeça.</p>
+            </article>
+
+            <article class="card">
+                <h3>Presbiopia</h3>
+                <p>Conhecida como "vista cansada", é a perda natural da capacidade de focar de perto associada ao envelhecimento, tornando a leitura de textos pequenos muito difícil sem óculos.</p>
+            </article>
+
+            <article class="card">
+                <h3>Conjuntivite</h3>
+                <p>É a inflamação da conjuntiva (membrana que cobre a parte branca do olho). Causa vermelhidão, lacrimejamento, sensibilidade à luz (fotofobia) e visão levemente turva por secreções.</p>
+            </article>
+        </main>
+    </div>
+
+    <script>
+        // --- CONTROLE DE BRILHO ---
+        let currentBrightness = 100;
+
+        function adjustBrightness(val) {
+            currentBrightness = Math.min(Math.max(currentBrightness + val, 30), 180);
+            document.documentElement.style.setProperty('--brightness', `${currentBrightness}%`);
+            document.getElementById('bright-val').innerText = `${currentBrightness}%`;
+        }
+
+        // --- SIMULAÇÃO DE VISÃO ---
+        function applyVisionFilter(condition) {
+            const root = document.documentElement.style;
+
+            // Reseta filtros
+            root.setProperty('--blur-val', '0px');
+            root.setProperty('--double-vision', 'none');
+            root.setProperty('--hue-rotate', '0deg');
+            root.setProperty('--opacity-val', '1');
+
+            switch (condition) {
+                case 'catarata':
+                    root.setProperty('--blur-val', '3px');
+                    root.setProperty('--opacity-val', '0.6');
+                    break;
+                case 'astigmatismo':
+                    root.setProperty('--blur-val', '1px');
+                    root.setProperty('--double-vision', '3px 3px 2px rgba(255,255,255,0.7)');
+                    break;
+                case 'miopia':
+                    root.setProperty('--blur-val', '4px');
+                    break;
+                case 'hipermetropia':
+                    root.setProperty('--blur-val', '2px');
+                    break;
+                case 'presbiopia':
+                    root.setProperty('--blur-val', '2.5px');
+                    break;
+                case 'conjuntivite':
+                    root.setProperty('--hue-rotate', '-50deg'); // Altera tom para avermelhado
+                    root.setProperty('--blur-val', '1.5px');
+                    break;
+                case 'normal':
+                default:
+                    // Mantém padrões resetados
+                    break;
+            }
+        }
+
+        // --- SINTETIZADOR DE VOZ (TEXT-TO-SPEECH) ---
+        const synth = window.speechSynthesis;
+
+        function speakText() {
+            // Interrompe falas anteriores se houver
+            synth.cancel();
+
+            // Pega todo o texto do container principal
+            const textToRead = document.getElementById('simulation-container').innerText;
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            
+            utterance.lang = 'pt-BR';
+            utterance.rate = 1.0; // Velocidade da fala
+
+            synth.speak(utterance);
+        }
+
+        function stopSpeech() {
+            synth.cancel();
+        }
+    </script>
+</body>
+</html>
