@@ -47,29 +47,33 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
 }
 initVoices();
 
-// --- 3. DITAR APENAS O CARD CLICADO ---
+// --- DITAR APENAS O CARD CLICADO (VOZ MAIS CLARA) ---
 function speakCard(cardElement) {
-    synth.cancel(); // Interrompe qualquer fala anterior
+    synth.cancel(); // Interrompe qualquer fala anterior para evitar sobreposição
 
     // Pega o título e o texto explicativo do card clicado
     const title = cardElement.querySelector('h3').innerText;
     const text = cardElement.querySelector('p').innerText;
-    const fullText = `${title}. ${text}`;
+    
+    // Junta o texto e remove caracteres/emojis que atrapalham a dicção
+    let cleanText = `${title}. ${text}`;
+    cleanText = cleanText.replace(/[^\w\sÁ-ÿ.,]/gi, ''); 
 
-    const utterance = new SpeechSynthesisUtterance(fullText);
+    const utterance = new SpeechSynthesisUtterance(cleanText);
 
     if (selectedVoice) {
         utterance.voice = selectedVoice;
     }
+    
     utterance.lang = 'pt-BR';
-    utterance.rate = 1.0;
+    
+    // AJUSTES PARA AUMENTAR A CLAREZA DA FALA:
+    utterance.rate = 0.88; // Velocidade um pouco mais lenta que o normal (0.88x) para melhorar a dicção
+    utterance.pitch = 1.0; // Tom de voz neutro e natural
 
     synth.speak(utterance);
 }
 
-function stopSpeech() {
-    synth.cancel();
-}
 
 // --- 4. FILTROS DE VISÃO ---
 function applyVisionFilter(condition) {
